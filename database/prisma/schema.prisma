@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model patients {
+  patient_id    Int      @id @default(autoincrement())
+  full_name     String
+  date_of_birth DateTime @db.Date
+  sex           Sex
+  reg_doctor_id Int
+  total_visits  Int      @default(0)
+  doctor        doctors  @relation(fields: [reg_doctor_id], references: [doctor_id])
+  phones        patient_phones[]
+  addresses     patient_addresses[]
+}
+
+model patient_phones {
+  phone_id     Int      @id @default(autoincrement())
+  patient_id   Int
+  phone_number String   @db.VarChar(20)
+  phone_type   String   @default("mobile")
+  patient      patients @relation(fields: [patient_id], references: [patient_id])
+}
+
+model patient_addresses {
+  address_id    Int      @id @default(autoincrement())
+  patient_id    Int
+  address_line1 String
+  address_line2 String?
+  city          String   @db.VarChar(100)
+  address_type  AddressType @default(home)
+  patient       patients @relation(fields: [patient_id], references: [patient_id])
+}
+
+model doctors {
+  doctor_id      Int        @id
+  full_name      String
+  speciality     String
+  contact_no     String
+  join_date      String
+  salary_monthly Float
+  dept_id        Int
+  is_active      String
+  patients       patients[]
+  appointments   appointments[]
+}
+
+model appointments {
+  appt_id        Int      @id
+  patient_id     Int
+  doc_id         Int
+  appt_datetime  DateTime
+  status         String   @db.Char(1)
+  fee            Decimal  @db.Decimal(10,2)
+  discount       Decimal  @db.Decimal(10,2)
+  room_number    Int
+  building_block String
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  doctor         doctors  @relation(fields: [doc_id], references: [doctor_id])
+}
+
+enum Sex {
+  M
+  F
+  N
+}
+
+enum AddressType {
+  home
+  work
+  billing
+  postal
+}
