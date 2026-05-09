@@ -1,39 +1,13 @@
-name: SonarQube Analysis
+# These are supported funding model platforms
 
-on:
-  push:
-    branches:
-      - master
-
-jobs:
-  sonar:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Compile Java sources
-        run: |
-          mkdir -p Project/build/classes
-          javac -cp Project/derbyclient-10.2.2.0.jar \
-            -d Project/build/classes \
-            Project/src/LMS/*.java
-
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://sonarcloud.io
-        with:
-          args: >
-            -Dsonar.organization=ayesha-saeed-0
-            -Dsonar.projectKey=ayesha-Saeed-0_Library-Management-System-JAVA
-            -Dsonar.sources=Project/src
-            -Dsonar.java.binaries=Project/build/classes
+github: # Replace with up to 4 GitHub Sponsors-enabled usernames e.g., [user1, user2]
+patreon: # Replace with a single Patreon username
+open_collective: # Replace with a single Open Collective username
+ko_fi: # Replace with a single Ko-fi username
+tidelift: # Replace with a single Tidelift platform-name/package-name e.g., npm/babel
+community_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry
+liberapay: # Replace with a single Liberapay username
+issuehunt: # Replace with a single IssueHunt username
+otechie: # Replace with a single Otechie username
+custom: ['https://www.cyfylabs.com']              
+#commit
