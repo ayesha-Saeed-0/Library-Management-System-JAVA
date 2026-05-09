@@ -19,6 +19,13 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Compile Java sources
+        run: |
+          mkdir -p Project/build/classes
+          javac -cp Project/derbyclient-10.2.2.0.jar \
+            -d Project/build/classes \
+            Project/src/LMS/*.java
+
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@master
         env:
@@ -29,3 +36,4 @@ jobs:
             -Dsonar.organization=ayesha-saeed-0
             -Dsonar.projectKey=ayesha-Saeed-0_Library-Management-System-JAVA
             -Dsonar.sources=Project/src
+            -Dsonar.java.binaries=Project/build/classes
